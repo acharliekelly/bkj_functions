@@ -1,0 +1,46 @@
+.updated.factory-bootstrap-329 {
+	display: none;
+	comment: hide image elevator nag;
+}
+tr[data-slug="onepress-image-elevator"] div.row-actions span:nth-child(1),
+tr[data-slug="onepress-image-elevator"] .plugin-version-author-uri {
+	display: none;
+	comment: hide image elevator update notice;
+}
+table.acp-ie-table.acp-ie-enabled.acp-ie-table--v2 tr td.acp-ie-editable .acp-ie-controls {
+	right: auto!important;
+	bottom: auto!important;
+	top: 2px;
+	left: 2px;
+	opacity: .9;
+}
+ [data-colname="Notes"] {
+font-family: "Comic Sans MS", cursive, sans-serif;
+ color: green!important;
+}
+.bkj-notice {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	color: green!important;
+}
+
+.red { background-color: red!important; }
+.welcome-panel .orange,
+.orange { background-color: orange!important; }
+a.bkj-button {
+	border-radius: 1000px!important;
+	padding: .25em 1em!important;
+	display: inline-block!important;
+	text-decoration: none!important;
+	color: white!important;
+	border: none!important;
+}
+.bkj-button:hover { opacity: .8!important; }
+
+.update-message.notice.notice-alt.inline.notice-warning {
+	display: none;
+}
+
+.e-ai-layout-button,
+.e-ai-button,
+div#e-announcements-root {display: none!important;}
+
