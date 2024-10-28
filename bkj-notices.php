@@ -10,6 +10,8 @@ echo "</PRE>";
 */
 
 function bkjnotices_trash_post_attachment_reminder_admin_notice() {
+	    // Check if Media Trash is enabled
+		if ( defined('MEDIA_TRASH') && MEDIA_TRASH ) {
 	$what_was_deleted = 'item';
 	if (isset($_GET['post_type']) ) { $what_was_deleted = $_GET['post_type'];}
 	// are there in fact any attachments?
@@ -35,7 +37,7 @@ function bkjnotices_trash_post_attachment_reminder_admin_notice() {
 		if ($count >0) {$found_attachments .= " (So you may have some orphans on your hands when the $what_was_deleted is truly deleted.) "; }
 		if (strpos(@$_GET['ids'],',') > 0) {$found_attachments = "<br />Multiple posts deleted, so there could be multiple attachments to delete, too.";}
 	}
-	
+
 	?>
 	<div class="notice notice-warning is-dismissible">
 	<p>If the <strong><?php echo $what_was_deleted; ?></strong> you deleted or trashed has any attachments, remember to delete them also, 
@@ -45,6 +47,8 @@ function bkjnotices_trash_post_attachment_reminder_admin_notice() {
 	</p>
 	</div>
 	<?php
+}
+
 }
 /// looking for this: edit.php?post_type=post&trashed=1&ids=149
 if ( isset($_GET['deleted']) ||  isset($_GET['trashed'])  ) {	add_action( 'admin_notices', 'bkjnotices_trash_post_attachment_reminder_admin_notice' ); }

@@ -1,10 +1,8 @@
 <?php
-
 $bkjf_debug = print_r(error_get_last(),true);
 if ($bkjf_debug) {
 	draw_notice('error', "<p>Hmm, there seems to be some sort of error:</p><pre>" . $bkjf_debug . "</pre><p>This is probably <strong>NOT</strong> related to the BKJ Functions plugin. But you should probably check it out!");
 }
-
 // This file is designed to make it relatively easy to set up a basic information panel about the plugin. It's mostly just HTML.
 global $bkjfunctions_version;
 ?>
@@ -33,7 +31,6 @@ global $bkjfunctions_version;
 jQuery(function ($) {
 });
 </script>
-
 <?php 
 function bkjf_reveal_functions() {
 	$found = array();

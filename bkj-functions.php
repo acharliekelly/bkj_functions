@@ -2,12 +2,20 @@
 /*
 Plugin Name: BKJ Functions
 Plugin URI: http://bkjproductions.com/wordpress/
-Description: 1.5.5jsfTEST14: Includes JS Form-filling script. Disables autosave, adds Page Category/Tag/Excerpt, displays image sizes, removes Emoji, Nags you when changing themes, adds a "Class" taxonomy suitable for giving a page a class, makes Julienne Fries. Also runs an iThemes Security Report, via url. Connects with BKJ Process URLs plugin to deliver information about a client's KB. Adds a few helpful messages for the novice, at the top of the "List" type of displays of Pages and Posts. When you delete something, a reminder to delete attachments shows up. Rewrites URL for iThemes security lookups. Allows VCF (vcard) to be uploaded. Adds Log setting for Simple History.
+Description: Includes JS Form-filling script. Disables autosave, adds Page Category/Tag/Excerpt, displays image sizes, removes Emoji, Nags you when changing themes, adds a "Class" taxonomy suitable for giving a page a class, makes Julienne Fries. Also runs an iThemes Security Report, via url. Connects with BKJ Process URLs plugin to deliver information about a client's KB. Adds a few helpful messages for the novice, at the top of the "List" type of displays of Pages and Posts. When you delete something, a reminder to delete attachments shows up. Rewrites URL for iThemes security lookups. Allows VCF (vcard) to be uploaded. Adds Log setting for Simple History.
 Author: Various
-Version: 1.5.5jsfTEST14
+Version: 1.6.2
 Author URI: http://www.bkjproductions.com/
 
-Version History: REMEMBER TO UPDATE $bkjfunctions_version IMMEDIATELY when you edit this file!\
+Version History: REMEMBER TO UPDATE $bkjfunctions_version IMMEDIATELY when you edit this file!
+1.6.3	Update referral callback in footer
+1.6.2	Fixed message when deleting media files to ONLY appear is MEDIA TRASH is defined as true in wp config
+1.6.1	Added some GREEN or RED text to indicate whether or not simple history is active inside of BKJ Settings + Added a note in our auto form fill alert about getting flagged by recaptcha
+1.6.0	Added a counter for our flagged ITSR files also added a check for GeoLite2-Country.mmdb with a display message and to check if plugin is installed / active.
+1.5.9	Added some CSS to hide annoying elementor alerts and displays. Also fixed CSS for list items in KB
+1.5.8 	Added some Elementor-specific CSS
+1.5.7	Changed jsf delay to 3 seconds rather than 1 second. Removed duplicate code in jsf. Added new mad-libs on ITSR.
+1.5.6	Added error/deg log probe to display on ITS Reports
 1.5.5jsf	Javascript Form
 1.5.5	Review GA Probe
 1.5.4   Add google-analytics-probe.php  (see line =~ 777)
@@ -79,14 +87,23 @@ Version History: REMEMBER TO UPDATE $bkjfunctions_version IMMEDIATELY when you e
 
 TODO: Make SimpleHistory extension a setting.
 */
-$bkjfunctions_version = '1.5.5jsfTEST14';
-
+$bkjfunctions_version = '1.6.3';
 
 if ( function_exists('is_admin') && is_admin() ) {
 	//require_once('wp-updates-plugin.php');
 	//new WPUpdatesPluginUpdater_1831( 'http://wp-updates.com/api/2/plugin', plugin_basename(__FILE__));
 }
 
+function bkjf_formatFileSize($sizeInBytes) {
+    $units = array('B', 'KB', 'MB', 'GB', 'TB');
+    $unitIndex = 0;
+
+    while ($sizeInBytes >= 1024 && $unitIndex < count($units) - 1) {
+        $sizeInBytes /= 1024;
+        $unitIndex++;
+    }
+    return round($sizeInBytes, 2) . ' ' . $units[$unitIndex];
+}
 
 // show media sizes:
 /*
@@ -148,7 +165,6 @@ if (!function_exists('isMobilePhone')) {
 		return true;}
 		return false;
 	}
-
 }
 
 //see also http://wptheming.com/2011/08/admin-notices-in-wordpress/
@@ -182,7 +198,6 @@ function add_taxonomies_to_pages() {
 add_action( 'init', 'add_taxonomies_to_pages' );
 if ( ! is_admin() ) {
 	add_action( 'pre_get_posts', 'category_and_tag_archives' );
-
 }
 
 // Add Page as a post_type in the archive.php and tag.php 
@@ -200,7 +215,6 @@ function category_and_tag_archives( $wp_query ) {
 	if ( $wp_query->get( 'tag' ) )
 		$wp_query->set( 'post_type', $my_post_array );
 }
-
 
 /*
 Disable autosave
@@ -451,9 +465,29 @@ add_action('admin_init', 'its_ip_search_workaround');
 add_action('admin_init', 'bkjf_admin_css');
 
 
+//add_action( 'elementor/frontend/after_enqueue_styles', 'bkjf_admin_css' );
+add_action( 'elementor/editor/after_enqueue_styles', 'bkjf_elementor_admin_css');
+
+//add_action( 'elementor/frontend/before_enqueue_styles', 'bkjf_elementor_admin_css' );
+
+/* alternate method
+add_action( 'wp_enqueue_scripts', 'enqueue_elementor_custom_css' );
+
+function enqueue_elementor_custom_css() {
+    if ( defined( 'ELEMENTOR_VERSION' ) ) {
+        // Replace 'your-custom-style' with your handle and 'path/to/your/custom-style.css' with your CSS file path.
+        wp_enqueue_style( 'your-custom-style', plugin_dir_url( __FILE__ ) .'css/bkjf-admin.css?s=randomseed', array(), '1.0.0', 'all' );
+    }
+}
+*/
+function bkjf_elementor_admin_css() {
+	$randomseed = time();
+	wp_register_style( 'bkjf-admin', plugin_dir_url( __FILE__ ) ."css/bkjf-admin.css?s=$randomseed",array(), '1.0.0', 'all');
+	wp_enqueue_style( 'bkjf-admin' );
+}
 
 function bkjf_admin_css() {
-	wp_enqueue_style( 'bkjf-admin', plugin_dir_url( __FILE__ ) .'css/bkjf-admin.css?s=randomseed');
+	wp_enqueue_style( 'bkjf-admin', plugin_dir_url( __FILE__ ) .'css/bkjf-admin.css?s=randomseed',array(), '1.0.0', 'all');
 }
 
 function its_ip_search_workaround(){
@@ -790,4 +824,3 @@ include('simplehistory.php');
 if ( ! function_exists( 'is_plugin_active_for_network' ) ) {
     require_once( ABSPATH . '/wp-admin/includes/plugin.php' );
 }
-

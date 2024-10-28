@@ -2,45 +2,117 @@
 	display: none;
 	comment: hide image elevator nag;
 }
+
 tr[data-slug="onepress-image-elevator"] div.row-actions span:nth-child(1),
 tr[data-slug="onepress-image-elevator"] .plugin-version-author-uri {
 	display: none;
 	comment: hide image elevator update notice;
 }
+
 table.acp-ie-table.acp-ie-enabled.acp-ie-table--v2 tr td.acp-ie-editable .acp-ie-controls {
-	right: auto!important;
-	bottom: auto!important;
+	right: auto !important;
+	bottom: auto !important;
 	top: 2px;
 	left: 2px;
 	opacity: .9;
 }
- [data-colname="Notes"] {
-font-family: "Comic Sans MS", cursive, sans-serif;
- color: green!important;
+
+[data-colname="Notes"] {
+	font-family: "Comic Sans MS", cursive, sans-serif;
+	color: green !important;
 }
+
 .bkj-notice {
 	font-family: "Comic Sans MS", cursive, sans-serif;
-	color: green!important;
+	color: green !important;
 }
 
-.red { background-color: red!important; }
+.red {
+	background-color: red !important;
+}
+
 .welcome-panel .orange,
-.orange { background-color: orange!important; }
-a.bkj-button {
-	border-radius: 1000px!important;
-	padding: .25em 1em!important;
-	display: inline-block!important;
-	text-decoration: none!important;
-	color: white!important;
-	border: none!important;
+.orange {
+	background-color: orange !important;
 }
-.bkj-button:hover { opacity: .8!important; }
 
+a.bkj-button {
+	border-radius: 1000px !important;
+	padding: .25em 1em !important;
+	display: inline-block !important;
+	text-decoration: none !important;
+	color: white !important;
+	border: none !important;
+}
+
+.bkj-button:hover {
+	opacity: .8 !important;
+}
+
+.notice.e-notice.e-notice--dismissible.e-notice--extended,
 .update-message.notice.notice-alt.inline.notice-warning {
 	display: none;
 }
 
+#footer-thankyou,
+#wpseo-wincher-dashboard-overview,
+#wpseo-dashboard-overview,
+.yst-feature-upsell,
+.notice-yoast.yoast.is-dismissible,
 .e-ai-layout-button,
 .e-ai-button,
-div#e-announcements-root {display: none!important;}
+div#e-announcements-root {
+	display: none !important;
+}
 
+/* Here is our custom CSS to hide annoying Elementor alerts / interfaces */
+
+.notice.e-notice.e-notice--dismissible.e-notice--extended {
+	display: none;
+	comment: Hides annoying Elementor notice 2023-12
+}
+
+.e-image-ai-media-library {
+	display: none;
+	comment: Remove annoying Elementor AI nag in Media Library
+}
+
+.plugin-install-elementor {
+	display: none;
+	comment: on Plugins panel remove Elementor-specific plugins;
+}
+
+.e-hint {
+	display: none;
+	comment: Hides alert in the Media Library panel for optimizing images;
+}
+
+.elementor-control-media__promotions {
+	display: none !important;
+	comment: Add this to admin css to get rid of Elementor promos;
+}
+
+#e-image-ai-insert-media {
+	display: none;
+	comment: Add this to get rid of edit image with elementor ai in media library;
+}
+
+/* Some CSS to fix list items in our Knowledge Base Articles */
+
+#post-body-content li {
+	padding: inherit;
+	margin: inherit;
+	list-style-position: inside;
+	list-style-type: disc;
+	comment: this changed our list items to display properly in our content area
+}
+
+.postbox li {
+	list-style: none;
+	comment: this disables list item circles on our table of contents
+}
+
+#post-body-content ul {
+	padding-left: 10px;
+	comment: added 10px of space to the left of our list items because we have it set to none for our table of contents
+}

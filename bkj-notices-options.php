@@ -313,6 +313,14 @@ class MySettingsPage {
 		if  ($temp < 1) {$temp = 366;}   
 		$html = '<input type="number" style="width: 6em;" id="bkjf_simple_history" name="bkjfunctions_option_name[bkjf_simple_history]"  maxlength="4" size="4" placeholder="366" value="' . $temp . '" />';
 		$html .= ' The number of days to log with <a href="index.php?page=simple_history_page">Simple History</a>, if it is active.';
+
+		    // Check if the Simple History plugin is active
+			if (is_plugin_active('simple-history/index.php')) {
+				$html .= '<span style="color: green; font-weight: bold;"> Simple History is Active</span>';
+			} else {
+				$html .= '<span style="color: red; font-weight: bold;"> Simple History is not Active</span>';
+			}
+
 		$html = "<label>$html";
         // Not sure if there should be a message here, but this was throwing an error because it was undefined so I add an empty string.
         $msg = '';

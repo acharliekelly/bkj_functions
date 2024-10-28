@@ -34,15 +34,18 @@ function its_report() {
 	if( !class_exists( 'ITSEC_Core' ) ) {
 		die('To use this feature you have to have iThemes Security plugin activated.'); 
 	}
-
+	
 	global $wp_version;
 	global $bkjfunctions_version;
 	$php_version = phpversion();
 	$active_plugins = count(get_option('active_plugins'));
 	$php_version_note = ' (Great! Your site is using a modern version of PHP!)';
-	if ($php_version < 8) { $php_version_note = ' (Note: We will need to update PHP at some point.)';}
-
-	$extra_version_info = "<p><strong>Geeky Tech-stuff: </strong>";
+	if ($php_version < 8) { 
+		$php_version_note = ' (Note: We will need to update PHP at some point.)';
+	}	
+	$extra_version_info = "<p>" . bkjf_iq_block_country_stuff() . "</p>";
+	$extra_version_info .= "<p><strong>Geeky Tech-stuff: </strong>";
+	
 	$extra_version_info .= bkjf_plugin_update_count() . ' WordPress version: ' . 
 		"$wp_version. PHP: $php_version$php_version_note</p>" .
 		"<hr noshade style='border: none; border-top: 1px solid grey;'>" .
@@ -57,6 +60,7 @@ function its_report() {
 		$extra_version_info .= '<p>Elementor: ' . $temp . '</p>';
 	}
 	$extra_version_info .= "<p>(BKJ Functions Version: $bkjfunctions_version)</p>";
+	
 	
 
 	global $table_prefix;
@@ -150,7 +154,14 @@ function its_report() {
 	$site_name = get_bloginfo('name' );
 	$narrative .= log_simplehistory();
 	
-	$css = "<style>* {font-family: sans-serif;}body {max-width: 760px; width: 90%; margin: 10px auto;}</style>";
+	$css = "<style>* {font-family: sans-serif;}
+		body {max-width: 760px; width: 90%; margin: 10px auto;}
+		.datecolumn {width: 11em;}
+		.sizecolumn {width: 6em;}
+		table tr:nth-child(odd) {background-color: #eee;}
+		table td {margin: 0; padding: .2em .5em;}
+		table {border-collapse: collapse; }
+	</style>";
 	$narrative = "$css<h1>$site_name</h1><p><strong>Security Notes: $mindate  to $maxdate</strong></p>" . $narrative;
 	
 	if ($its_spreadsheet) {
@@ -223,7 +234,7 @@ function its_report() {
 		}
 		echo $post_narrative;
 	}
-	
+	include('error-log-probe.php');
 	die("<p>Complete.</p>");
 }
 // end of main function
@@ -392,6 +403,7 @@ function bkjf_process_date_range_from_data($array) {
 		'maxdate' => $maxdate,
 	);
 }
+
 function bkjf_process_brute_force($array, $max) {
 	diagnose('<hr>');
 	diagnose('bkjf_process_brute_force');
@@ -422,6 +434,7 @@ function bkjf_process_brute_force($array, $max) {
 			$out_array[] = "$k &mdash; $v time$plurals";	
 		}
 	}
+	
 	if ($howmany == 0) {return 'No brute force username/password attempts detected. ';}
 	$output = "There were $howmany brute force attempts to log in, with such user names as ";
 	$output .= implode(', ',$out_array) . ". ";
@@ -431,6 +444,7 @@ function bkjf_process_brute_force($array, $max) {
 	$output .= '<br /><br />';
 	return $output;
 }
+
 function bkjf_process_404s($array, $max) {
 	diagnose('<hr>');
 	diagnose('bkjf_process_404s');
@@ -517,10 +531,11 @@ function bkjf_process_ips($array, $max) {
 		$out_array[] = "$k &mdash; $v time$plurals";	
 	}
 	if ($howmany == 0) {return 'No suspicious IP addresses were found. ';}
-	$intrusions = pick_random('intrusions,infractions,examples of meddling by hackers,trespasses by possible hackers,possible hack attempts,likely attacks,annoying requests,suspicious requests,hacker-like activities,hacker-ish things,intrusions');
-	$locations = pick_random('diverse locations,places,exotic locales,dens of iniquity,locations,nefarious places,dubious locations,suspect locales,faraway places,alarming areas,treacherous locales,risky spots,nefarious neighborhoods,risky regions');
-	$noticed = pick_random('noticed,recorded,encountered,found,observed,discovered,reveals');
-	$output = "iThemes Security $noticed $howmany $intrusions overall, from such $locations as \n";
+	//$intrusions = pick_random('intrusions,encroachments,infractions,transgressions,misdeeds,examples of meddling by hackers,instances of hacker interference,cases of possible hacker involvement,occurrences of hacker manipulation,trespasses by possible hackers,intrusions by suspected hackers,encroachments by alleged hackers,possible hack attempts,potential hacking endeavors,likely hacking efforts,suspected hacking tries,likely attacks,annoying requests,irritating queries,suspicious requests,dubious inquiries,hacker-like activities,hacking-type activities,hacker-ish things,hacker-type deeds');
+	$intrusions = pick_random('"intrusions","encroachments","infractions","transgressions","misdeeds","examples of meddling by hackers","instances of hacker interference","cases of possible hacker involvement","occurrences of hacker manipulation","trespasses by possible hackers","intrusions by suspected hackers","encroachments by alleged hackers","possible hack attempts","potential hacking endeavors","likely hacking efforts","suspected hacking tries","likely attacks","annoying requests","irritating queries","suspicious requests","dubious inquiries","hacker-like activities","hacking-type activities","hacker-ish things","hacker-type deeds"');
+	$locations = pick_random('diverse locations,different areas,various places,places,locations,areas,exotic locales,unusual places,dens of iniquity,hubs of vice,locations,nefarious places,sinister spots,dubious locations,shady spots,suspect locales,questionable areas,faraway places,distant locations,remote areas,isolated spots,alarming areas,troubling spots,treacherous locales,hazardous locations,nefarious neighborhoods,sinister zones,risky regions,precarious locales');
+	$noticed = pick_random('detected,perceived,discerned,recognized,recorded,documented,logged,registered,chronicled,encountered,came across,found,identified,spotted,observed,witnessed,noted,discovered,unearthed,revealed,detected,unveiled,reveals,discloses,shows,');
+	$output = "Our security checker $noticed $howmany $intrusions overall, from such $locations as \n";
 	$output .= implode(', ',$out_array) . ". \n";
 	$output .= '<br /><br />';
 	return $output;
@@ -699,7 +714,7 @@ function qualify_risk($howmany, $type_of_attack = 'brute_force') {
 		$output .= "Whoa, $howmany? This is pretty extreme! " . $addon;
 	}
 	
-	if (( $howmany > 500) && ($howmany < 1500) ) {
+	if (( $howmany > 800) && ($howmany < 1500) ) {
 		$output .= "Wait, $howmany??? This is getting pretty serious! Please give us a call to discuss some options, if you want to do something about this. ";
 	}
 	return $output;
@@ -891,7 +906,7 @@ function bkjf_process_cf7dbplugin_submits() {
 	if ($howmany) {
 		$plural = '';
 		if ($howmany > 1) {$plural = 's';}
-    		return  "You should have received $howmany contact form$plural (since the last time your contact form database was dumped).";
+    		return  "You should have received $howmany contact form$plural (since the last time your contact form database was dumped)."; 
 		}
 	else {return "No contact form database detected.";}
 }
@@ -941,6 +956,32 @@ function log_simplehistory( $return='print') {
 	//	$mything = SimpleLogger()->rss_feed_show();//
 }
 
+function bkjf_iq_block_country_stuff() {
+
+	    // Path to the IQ Block Country plugin
+		$plugin_path = 'iq-block-country/iq-block-country.php';
+
+		// Check if the plugin is installed
+		if (!file_exists(WP_PLUGIN_DIR . '/' . $plugin_path)) {
+			// Return nothing if the plugin is not installed
+			return '';
+		}
+		
+    // Include the IQ Block Country probe file
+    include('iq-block-country-probe.php');
+    
+    // Create an instance of the IQBlockCountryProbe class
+    $iqBlockCountryProbe = new IQBlockCountryProbe();
+
+    // Check if the plugin is active
+    if (!$iqBlockCountryProbe->isIQBlockCountryPluginActive()) {
+        return "Your IQ Block Country Plugin is not active, please consider activating it.";
+    }
+    
+    return "We are using the IQ Block Country plugin on this site to block other countries' IPs.";
+}
+
+
 function bkjf_ga_stuff( ) {
 
 	include('ga-analytics-probe.php');
@@ -960,7 +1001,13 @@ function bkjf_ga_stuff( ) {
 	return $output;
 	
 }
-	
+
+function bkjf_get_error_log()
+{
+	include('error-log-probe.php');
+	return bkjf_get_debug_log();
+}
+
 function bkjf_elementor_custom_code() {
 	include('elementor-probe.php');
 	return bkjf_get_elementor_custom_code();
