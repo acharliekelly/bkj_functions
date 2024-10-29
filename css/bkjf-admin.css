@@ -98,8 +98,7 @@ div#e-announcements-root {
 }
 
 /* Some CSS to fix list items in our Knowledge Base Articles */
-
-#post-body-content li {
+.wpclientref #post-body-content li {
 	padding: inherit;
 	margin: inherit;
 	list-style-position: inside;
@@ -107,12 +106,12 @@ div#e-announcements-root {
 	comment: this changed our list items to display properly in our content area
 }
 
-.postbox li {
+.wpclientref .postbox li {
 	list-style: none;
 	comment: this disables list item circles on our table of contents
 }
 
-#post-body-content ul {
+.wpclientref #post-body-content ul {
 	padding-left: 10px;
 	comment: added 10px of space to the left of our list items because we have it set to none for our table of contents
 }
