@@ -816,7 +816,7 @@ function bkjf_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 }
 
 
-include('footer-referral.php');
+// include('footer-referral.php');
 
 
 include('simplehistory.php');
