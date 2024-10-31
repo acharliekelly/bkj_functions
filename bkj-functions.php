@@ -4,10 +4,11 @@ Plugin Name: BKJ Functions
 Plugin URI: http://bkjproductions.com/wordpress/
 Description: Includes JS Form-filling script. Disables autosave, adds Page Category/Tag/Excerpt, displays image sizes, removes Emoji, Nags you when changing themes, adds a "Class" taxonomy suitable for giving a page a class, makes Julienne Fries. Also runs an iThemes Security Report, via url. Connects with BKJ Process URLs plugin to deliver information about a client's KB. Adds a few helpful messages for the novice, at the top of the "List" type of displays of Pages and Posts. When you delete something, a reminder to delete attachments shows up. Rewrites URL for iThemes security lookups. Allows VCF (vcard) to be uploaded. Adds Log setting for Simple History.
 Author: Various
-Version: 1.6.4
+Version: 1.6.5
 Author URI: http://www.bkjproductions.com/
 
 Version History: REMEMBER TO UPDATE $bkjfunctions_version IMMEDIATELY when you edit this file!
+1.6.5	Referral shortcode
 1.6.4	Footer referral function
 1.6.3	Update CSS
 1.6.2	Fixed message when deleting media files to ONLY appear is MEDIA TRASH is defined as true in wp config
@@ -88,7 +89,7 @@ Version History: REMEMBER TO UPDATE $bkjfunctions_version IMMEDIATELY when you e
 
 TODO: Make SimpleHistory extension a setting.
 */
-$bkjfunctions_version = '1.6.4';
+$bkjfunctions_version = '1.6.5';
 
 if ( function_exists('is_admin') && is_admin() ) {
 	//require_once('wp-updates-plugin.php');
@@ -816,7 +817,8 @@ function bkjf_disable_emojis_remove_dns_prefetch( $urls, $relation_type ) {
 }
 
 
-// include('footer-referral.php');
+include('footer-referral.php');
+
 
 
 include('simplehistory.php');
