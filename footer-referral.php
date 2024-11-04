@@ -5,6 +5,7 @@
 function bkj_get_site_slug() : string {
     $urlparts = wp_parse_url(home_url());
     $domain = $urlparts['host'];
+	$domain = sanitize_title($domain);
     return $domain;
 }
 
@@ -25,37 +26,37 @@ if (!function_exists('normalize_empty_atts')) {
 
 function bkj_referral_shortcode($atts, $content = null) : string {
     $customer = bkj_get_site_slug();
-    print_r($atts);
+    //print_r($atts);
     extract(shortcode_atts(
         array (
-            'Management'    => false,
-            'Design'        => false,
+            'management'    => false,
+            'design'        => false,
             'and'           => false
         ),
         normalize_empty_atts($atts)
     ));
 
-    echo "management: " . ($management ? 'YES ' : 'NO ');
+/*    echo "management: " . ($management ? 'YES ' : 'NO ');
     echo "design: " . ($design ? 'YES ' : 'NO ');
     echo "and: " . ($and ? 'YES ' : 'NO ');
-
-    $type = "stuff";
+*/
+    $type = "WordPress Design and Management";
     
     if ($design) {
-        $type = 'Design';
+        $type = 'Website Design';
     }
     if ($management) {
-        $type = 'Management';
+        $type = 'WordPress Management';
     }
-    if ($and) {
-        $type = 'Management and Design';
+    if ($design && $management) {
+        $type = 'Design and Management';
     }
 
-    $link = "https://bkjproductions.com/?f=$customer";
-    $title = "Website $type by BKJ Productions, LLC";
-    $text = "Greater Boston Website $type by BKJ Productions, LLC";
+    $link = "https://www.bkjproductions.com/?f=$customer";
+    $text = "$type: BKJ Productions";
+    $title = "Greater Boston $type by BKJ Productions, LLC";
     $html = '<span class="bkj-referral">';
-    $html .= '<a target="_blank" ref="noopener" title="' . $title . '" href="' . $link . '">';
+    $html .= "<a target='_blank' ref='noopener' title='$title' href='$link'>";
     $html .=  $text . '</a></span>';
     return $html;
 }
